@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.files        = Dir['README.markdown', 'lib/**/*', 'app/**/*', 'config/*']
   s.require_path = 'lib'
   s.requirements << 'none'
+  s.authors      = 'Spree Community & 3DRobotics'
 
   s.has_rdoc = true
 
