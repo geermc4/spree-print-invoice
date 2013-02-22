@@ -11,7 +11,7 @@ INSTALLATION
 
 1. The gem relies only on the prawn gem, to install you need to add the following lines to your Gemfile
 
-    gem 'spree_print_invoice' , :git => 'git://github.com/romul/spree-print-invoice.git'
+    gem 'spree_print_invoice' , :git => 'git://github.com/mrpollo/spree-print-invoice.git'
 
 2. run bundler
 
