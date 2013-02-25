@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <style>
+      body { font-family: Helvetica; font-size: 18px; }
+      table#document { width: 950px; }
+      td { vertical-align: top; padding: 5px; font-size: 90%;}
+      td.right, th.right { text-align: right; }
+      th { text-align: left; padding: 5px; font-size: 90%; }
+      table#address, table#line_items { width: 100%; border: 1px solid; }
+      table.with_border th, table.with_border th, table.with_border td, table.with_border td { border: 1px solid; }
+      table#address td { width: 50%; }
+      table#address { margin: 2em 0 2em 0; }
+      h3 { font-weight: bold; font-size: 180%; color: #135391; margin-bottom: 0.5em; }
+      p#order_number { font-weight: bold; }
+      #summary td { text-align: right; font-weight: bold; line-height: 1.5em; }
+    </style>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>
