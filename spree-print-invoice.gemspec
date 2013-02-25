@@ -3,7 +3,7 @@ version = '0.60.0'
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_print_invoice'
-  s.version     = version
+  s.version     = '1.0.0'
   s.summary     = 'Print invoices from a spree order'
   s.required_ruby_version = '>= 1.8.7'
 
@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
 
   s.add_dependency('pdfkit', '~> 0.5.2')
-  s.add_dependency('spree_core', '>= 0.30.0')
+  s.add_dependency('spree_core', '>= 1.2.0')
 
 end
