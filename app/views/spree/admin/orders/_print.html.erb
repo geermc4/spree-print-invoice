@@ -11,7 +11,10 @@
       <% end %>
       <p id="order_number">
         <%= "#{I18n.t(:order_number)} #{@order.number}" %><br />
-        <%= @order.email %>
+	<%=
+	  # Disabling Email for now
+	  #@order.email
+	%>
       </p>
       <p>
         <%= I18n.l @order.completed_at.to_date %>
@@ -20,12 +23,12 @@
   </tr>
   <tr>
     <td colspan="2">
-<%
-  bill_address = @order.bill_address
-  ship_address = @order.ship_address
-  shipping_method = @order.shipping_method
-  anonymous = @order.email =~ /@example.net$/
-%>
+      <%
+	bill_address = @order.bill_address
+	ship_address = @order.ship_address
+	shipping_method = @order.shipping_method
+	anonymous = @order.email =~ /@example.net$/
+      %>
       <table id="address" class="with_border" cellspacing="0">
         <tr>
           <th><%= I18n.t(:billing_address) %></th>
@@ -71,8 +74,8 @@
           <th class="right"><%= t(:qty) %></th>
           <%== "<th class=\"right\">#{t(:total)}</th>" unless @hide_prices %>
         </tr>
-        <% @order.line_items.each do |item| %>
-        <tr>
+	<% @order.line_items.each_with_index do |item, index| %>
+	<tr id="<%= "col_#{index}" %>" class="col <%= (index.odd?) ? "odd" : "even" %>">
           <td><%= item.variant.product.sku %></td>
           <td><%= item.variant.product.name %></td>
           <%== "<td class=\"right\">#{number_to_currency(item.price)}</td>" unless @hide_prices %>

@@ -9,5 +9,10 @@
     </p>
     <% #button_link_to(t(button.to_s+"_print"), spree_admin_order_print_path(@order, :pdf, :template => button)) %>
   <% end %>
+  <p>
+    <%=
+      #admin_print_order
+    %>
+  </p>
 <% end %>
 </div>
