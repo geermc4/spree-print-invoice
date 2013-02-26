@@ -17,7 +17,7 @@ INSTALLATION
 
     bundle install
 
-3. Install [wkhtmltopdf](https://github.com/jdpace/PDFKit/wiki/Installing-WKHTMLTOPDF)
+3. Install [wkhtmltopdf](https://github.com/pdfkit/pdfkit/wiki/Installing-WKHTMLTOPDF)
 4. Add the following line to your application.rb
 
     config.middleware.use PDFKit::Middleware, {}, :only => %r[.*?/print]
