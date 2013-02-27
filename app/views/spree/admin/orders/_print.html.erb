@@ -5,9 +5,9 @@
     </td>
     <td class="right">
       <% if @hide_prices %>
-        <h3><%= I18n.t(:packaging_slip) %></h3>
+        <h3><%= I18n.t(:packaging_slip, :scope => [:printinvoice]) %></h3>
       <% else %>
-        <h3><%= I18n.t(:customer_invoice) %></h3>
+        <h3><%= I18n.t(:customer_invoice, :scope => [:printinvoice]) %></h3>
       <% end %>
       <p id="order_number">
         <%= "#{I18n.t(:order_number)} #{@order.number}" %><br />
