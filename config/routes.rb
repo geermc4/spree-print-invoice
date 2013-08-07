@@ -1,5 +1,15 @@
-#Spree::Core::Engine.routes.draw do
-Rails.application.routes.draw do
-  match "/admin/orders/:id/print", :to => 'spree/admin/orders#print', :via => :get, :as => :spree_admin_print_order
-  match "/orders/:id/print", :to => 'spree/orders#print', :via => :get, :as => :spree_admin_print_order
+Spree::Core::Engine.routes.draw do
+  Spree::Core::Engine.routes.draw do
+    resources :orders do
+      get :print
+      match "/print" => "orders#print", :as => :print_user_invoice
+    end
+    namespace :admin do
+      resources :orders do
+        get :print
+        match "/print" => "orders#print", :as => :print_admin_invoice
+      end
+    end
+  end
 end
+

@@ -5,19 +5,19 @@
     </td>
     <td class="right">
       <% if @hide_prices %>
-        <h3><%= I18n.t(:packaging_slip, :scope => [:printinvoice]) %></h3>
+        <h3><%= Spree.t(:packaging_slip, :scope => [:printinvoice]) %></h3>
       <% else %>
-        <h3><%= I18n.t(:customer_invoice, :scope => [:printinvoice]) %></h3>
+        <h3><%= Spree.t(:customer_invoice, :scope => [:printinvoice]) %></h3>
       <% end %>
       <p id="order_number">
-        <%= "#{I18n.t(:order_number)} #{@order.number}" %><br />
+        <%= "#{Spree.t(:order_number)} #{@order.number}" %><br />
         <%=
           # Disabling Email for now
           #@order.email
         %>
       </p>
       <p>
-        <%= I18n.l @order.completed_at.to_date %>
+        <%= Spree.l @order.completed_at.to_date unless @order.completed_at.nil? %>
       </p>
     </td>
   </tr>
@@ -31,8 +31,8 @@
       %>
       <table id="address" class="with_border" cellspacing="0">
         <tr>
-          <th><%= I18n.t(:billing_address) %></th>
-          <th><%= I18n.t(:shipping_address) %></th>
+          <th><%= Spree.t(:billing_address) %></th>
+          <th><%= Spree.t(:shipping_address) %></th>
         </tr>
         <tr>
           <td>
