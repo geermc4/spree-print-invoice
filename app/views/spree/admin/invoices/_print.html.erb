@@ -76,9 +76,9 @@
           <tr id="<%= "col_#{index}" %>" class="col <%= (index.odd?) ? "odd" : "even" %>">
             <td><%= item.variant.product.sku %></td>
             <td><%= item.variant.product.name %></td>
-            <%== "<td class=\"right\">#{number_to_currency(item.price)}</td>" unless @hide_prices %>
+            <%== "<td class=\"right\">#{number_to_currency(item.line_item.price)}</td>" unless @hide_prices %>
             <td class="right"><%= item.quantity %></td>
-            <%== "<td class=\"right\">#{number_to_currency(item.price * item.quantity)}</td>" unless @hide_prices %>
+            <%== "<td class=\"right\">#{number_to_currency(item.line_item.price * item.quantity)}</td>" unless @hide_prices %>
           </tr>
         <% end %>
         <% unless @hide_prices %>
