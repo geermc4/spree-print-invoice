@@ -5,7 +5,7 @@ module Spree
       before_filter :load_objects, :only => [:print]
 
       def show
-        
+        # show all invoices in a list
       end
 
       def print
