@@ -4,11 +4,9 @@
       <%= image_tag Spree::PrintInvoice::Config[:print_invoice_logo_path].sub('public/images/', '') %>
     </td>
     <td class="right">
-      <% if @hide_prices %>
         <h3><%= Spree.t(:packaging_slip, :scope => [:printinvoice]) %></h3>
       <% else %>
         <h3><%= Spree.t(:customer_invoice, :scope => [:printinvoice]) %></h3>
-      <% end %>
       <p id="order_number">
         <%= "#{Spree.t(:order_number)} #{@order.number}" %><br />
         <%=
@@ -26,7 +24,7 @@
       <%
         bill_address = @order.bill_address
         ship_address = @order.ship_address
-        shipping_method = @order.shipping_method
+        # shipping_method = @order.shipping_method
         anonymous = @order.email =~ /@example.net$/
       %>
       <table id="address" class="with_border" cellspacing="0">
@@ -56,7 +54,7 @@
               <%= "#{@order.ship_address.zipcode} #{@order.ship_address.city} #{(@order.ship_address.state ? @order.ship_address.state.abbr : "")}" %><br />
               <%= ship_address.country.name %><br />
               <%= ship_address.phone %><br />
-              <%= "Shipping method: #{shipping_method.name}" if shipping_method %>
+              <% # "Shipping method: #{shipping_method.name}" if shipping_method %>
             <% end %>
             </p>
           </td>
@@ -68,39 +66,39 @@
     <td colspan="2">
       <table id="line_items" class="with_border" cellspacing="0">
         <tr>
-          <th><%= t(:sku) %></th>
-          <th><%= t(:item_description) %></th>
-          <%== "<th class=\"right\">#{t(:price)}</th>" unless @hide_prices %>
-          <th class="right"><%= t(:qty) %></th>
-          <%== "<th class=\"right\">#{t(:total)}</th>" unless @hide_prices %>
+          <th><%= Spree.t(:sku) %></th>
+          <th><%= Spree.t(:item_description) %></th>
+          <%== "<th class=\"right\">#{Spree.t(:price)}</th>" unless @hide_prices %>
+          <th class="right"><%= Spree.t(:qty) %></th>
+          <%== "<th class=\"right\">#{Spree.t(:total)}</th>" unless @hide_prices %>
         </tr>
-        <% @order.line_items.each_with_index do |item, index| %>
-        <tr id="<%= "col_#{index}" %>" class="col <%= (index.odd?) ? "odd" : "even" %>">
-          <td><%= item.variant.product.sku %></td>
-          <td><%= item.variant.product.name %></td>
-          <%== "<td class=\"right\">#{number_to_currency(item.price)}</td>" unless @hide_prices %>
-          <td class="right"><%= item.quantity %></td>
-          <%== "<td class=\"right\">#{number_to_currency(item.price * item.quantity)}</td>" unless @hide_prices %>
-        </tr>
+        <% @invoice.items.each_with_index do |item, index| %>
+          <tr id="<%= "col_#{index}" %>" class="col <%= (index.odd?) ? "odd" : "even" %>">
+            <td><%= item.variant.product.sku %></td>
+            <td><%= item.variant.product.name %></td>
+            <%== "<td class=\"right\">#{number_to_currency(item.price)}</td>" unless @hide_prices %>
+            <td class="right"><%= item.quantity %></td>
+            <%== "<td class=\"right\">#{number_to_currency(item.price * item.quantity)}</td>" unless @hide_prices %>
+          </tr>
         <% end %>
         <% unless @hide_prices %>
           <tr id="summary">
             <td colspan="4">
               <p>
-                <%= t(:subtotal) %><br />
-                <% @order.adjustments.each do |charge| %>
+                <%= Spree.t(:subtotal) %><br />
+                <% @invoice.adjustments.each do |charge| %>
                   <%= charge.label %><br />
                 <% end %>
-                <%= t(:order_total) %>
+                <%= Spree.t(:order_total) %>
               </p>
             </td>
             <td>
               <p>
-                <%= number_to_currency(@order.item_total) %><br />
-                <% @order.adjustments.each do |charge| %>
+                <%= number_to_currency(@invoice.subtotal) %><br />
+                <% @invoice.adjustments.each do |charge| %>
                   <%= number_to_currency(charge.amount) %><br />
                 <% end %>
-                <%= number_to_currency(@order.total) %>
+                <%= number_to_currency(@invoice.total) %>
               </p>
             </td>
           </tr>

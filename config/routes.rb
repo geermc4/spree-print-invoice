@@ -1,15 +1,14 @@
 Spree::Core::Engine.routes.draw do
-  Spree::Core::Engine.routes.draw do
+  scope module: :admin do
     resources :orders do
-      get :print
-      match "/print" => "orders#print", :as => :print_user_invoice
+      get "/invoice" => "invoices#print"
     end
-    namespace :admin do
-      resources :orders do
-        get :print
-        match "/print" => "orders#print", :as => :print_admin_invoice
-      end
+  end
+  namespace :admin do
+    resources :orders do
+      get "/invoices" => "invoices#show"
+      get "/invoices/complete" => "invoices#print"
+      get "/invoices/shipments/:shipment_id" => "invoices#print", :as => "invoices_shipments"
     end
   end
 end
-
