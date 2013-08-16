@@ -16,7 +16,7 @@ module Spree
         self.shipment = @order.shipments.select{|s| s.number == opts[:shipment_id]}.try(:first) unless opts[:shipment_id].nil?
       end
     end
-    
+
     def items
       if self.shipment.nil?
         self.order.shipments.collect(&:manifest).flatten
@@ -24,7 +24,7 @@ module Spree
         self.shipment.manifest
       end
     end
-    
+
     def adjustments
       if self.shipment.nil?
         self.order.adjustments
@@ -32,23 +32,33 @@ module Spree
         [self.shipment.adjustment]
       end
     end
-    
+
     def total
       if self.shipment.nil?
         self.order.total
       else
-        (self.shipment.line_items.collect(&:price).reduce(:+) + self.adjustments.collect(&:amount).reduce(:+)).to_f
+        (self.shipment_item_total + self.adjustments.collect(&:amount).reduce(:+)).to_f
       end
     end
-    
+
     def subtotal
       if self.shipment.nil?
         self.order.item_total
       else
-        self.shipment.line_items.collect(&:price).reduce(:+)
+        self.shipment_item_total
       end
     end
-    
+
+    def shipment_item_total
+      self.items.reject{|l| l.line_item.parent_id.present?}.collect do |o|
+        (o.line_item.price * o.quantity) + if !o.line_item.child_items.empty?
+          o.line_item.child_items.collect{|c| c.price * c.quantity}
+        else
+          [0.0]
+        end.reduce(:+)
+      end.reduce(:+)
+    end
+
     private
     
     def has_valid_members?
