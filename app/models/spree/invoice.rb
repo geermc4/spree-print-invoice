@@ -1,24 +1,27 @@
 module Spree
   class Invoice
     include ActiveModel::Validations
+    extend ActiveModel::Naming
     
     attr_accessor :order, :shipment, :errors, :opts
-    validates_presence_of :order
-    validates_presence_of :shipment, :if => :has_shipment?
+    attr_reader   :errors
+
+    validate :has_valid_members?
 
     def initialize(opts = {})
       @errors = ActiveModel::Errors.new(self)
       self.opts = opts
       self.order = Spree::Order.find_by_number opts[:order_id]
-      self.shipment = @order.shipments.select{|s| s.number == opts[:shipment_id]}.try(:first) unless opts[:shipment_id].nil?
+      if !self.order.nil?
+        self.shipment = @order.shipments.select{|s| s.number == opts[:shipment_id]}.try(:first) unless opts[:shipment_id].nil?
+      end
     end
     
     def items
       if self.shipment.nil?
-        # self.order.shipments.collect(&:line_item_manifest).flatten
-        self.order.line_items
+        self.order.shipments.collect(&:manifest).flatten
       else
-        self.shipment.line_items
+        self.shipment.manifest
       end
     end
     
@@ -48,8 +51,17 @@ module Spree
     
     private
     
+    def has_valid_members?
+      # self.order.errors.add(:order, Spree.t(:invalid_order)) unless has_order?
+      # self.shipment.errors.add(:shipment, Spree.t(:invalid_shipment)) unless has_shipment?
+    end
+    
+    def has_order?
+      !self.order.nil?
+    end
+    
     def has_shipment?
-      !self.opts[:shipment_id].nil?
+      !self.order.nil? && !self.opts[:shipment_id].nil?
     end
 
   end
