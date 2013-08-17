@@ -1,18 +1,3 @@
-<div class="order-links toolbar">
-<% if @order.completed_at? %>
-  <% buttons = "invoice" 
-     buttons = buttons.split(",").collect{|b| b.strip } %>
-  <h4>debug</h4>
-  <%  buttons.each do |button| %>
-    <p>
-      <%= t(button.to_s+"_print") %>
-    </p>
-    <% #button_link_to(t(button.to_s+"_print"), spree_print_admin_order_url(@order, :pdf, :template => button)) %>
-  <% end %>
-  <p>
-    <%=
-      #admin_print_order
-    %>
-  </p>
-<% end %>
-</div>
+<legend id='shipment-toolbar'>
+  <%= link_to(Spree.t(:invoice), admin_order_invoices_shipments_url(order.number, shipment.number), {:class => 'ship button icon-print'}) %>
+</legend>
