@@ -51,7 +51,7 @@ module Spree
 
     def shipment_item_total
       self.items.reject{|l| l.line_item.parent_id.present?}.collect do |o|
-        (o.line_item.price * o.quantity) + if !o.line_item.child_items.empty?
+        (o.line_item.price * o.line_item.quantity) + if !o.line_item.child_items.empty?
           o.line_item.child_items.collect{|c| c.price * c.quantity}
         else
           [0.0]
