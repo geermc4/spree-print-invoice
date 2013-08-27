@@ -6,8 +6,6 @@ module Spree
     attr_accessor :order, :shipment, :errors, :opts
     attr_reader   :errors
 
-    validate :has_valid_members?
-
     def initialize(opts = {})
       @errors = ActiveModel::Errors.new(self)
       self.opts = opts
@@ -19,9 +17,9 @@ module Spree
 
     def items
       if self.shipment.nil?
-        self.order.shipments.collect(&:manifest).flatten
+        self.order.line_items
       else
-        self.shipment.manifest
+        self.shipment.line_items
       end
     end
 
@@ -37,7 +35,7 @@ module Spree
       if self.shipment.nil?
         self.order.total
       else
-        (self.shipment_item_total + self.adjustments.collect(&:amount).reduce(:+)).to_f
+        (self.subtotal + self.adjustments.collect(&:amount).reduce(:+)).to_f
       end
     end
 
@@ -45,26 +43,11 @@ module Spree
       if self.shipment.nil?
         self.order.item_total
       else
-        self.shipment_item_total
+        self.items.collect{|l| l.price * l.quantity }.reduce(:+)
       end
     end
 
-    def shipment_item_total
-      self.items.reject{|l| l.line_item.nil? || l.line_item.parent_id.present?}.collect do |o|
-        (o.line_item.price * o.line_item.quantity) + if !o.line_item.child_items.empty?
-          o.line_item.child_items.collect{|c| c.price * c.quantity}
-        else
-          [0.0]
-        end.reduce(:+)
-      end.reduce(:+)
-    end
-
     private
-    
-    def has_valid_members?
-      # self.order.errors.add(:order, Spree.t(:invalid_order)) unless has_order?
-      # self.shipment.errors.add(:shipment, Spree.t(:invalid_shipment)) unless has_shipment?
-    end
     
     def has_order?
       !self.order.nil?
