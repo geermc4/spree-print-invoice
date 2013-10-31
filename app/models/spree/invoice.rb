@@ -2,7 +2,7 @@ module Spree
   class Invoice
     include ActiveModel::Validations
     extend ActiveModel::Naming
-    
+
     attr_accessor :order, :shipment, :errors, :opts
     attr_reader   :errors
 
@@ -27,15 +27,19 @@ module Spree
       if self.shipment.nil?
         self.order.adjustments
       else
-        [self.shipment.adjustment]
+        [self.shipment.adjustment] unless self.shipment.adjustment.nil?
       end
+    end
+
+    def adjustments_total
+      self.adjustments.collect(&:amount).compact.sum unless self.adjustments.nil?
     end
 
     def total
       if self.shipment.nil?
         self.order.total
       else
-        (self.subtotal + self.adjustments.collect(&:amount).reduce(:+)).to_f
+        (self.subtotal + (self.adjustments_total || 0))
       end
     end
 
@@ -43,16 +47,16 @@ module Spree
       if self.shipment.nil?
         self.order.item_total
       else
-        self.items.collect{|l| l.price * l.quantity }.reduce(:+)
+        self.items.collect{|l| l.price * l.quantity }.sum
       end
     end
 
     private
-    
+
     def has_order?
       !self.order.nil?
     end
-    
+
     def has_shipment?
       !self.order.nil? && !self.opts[:shipment_id].nil?
     end
