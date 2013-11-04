@@ -27,7 +27,7 @@ module Spree
       if self.shipment.nil?
         self.order.adjustments
       else
-        [self.shipment.adjustment] unless self.shipment.adjustment.nil?
+        (self.shipment.adjustment.nil?) ? [] : [self.shipment.adjustment]
       end
     end
 
