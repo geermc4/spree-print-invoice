@@ -32,7 +32,7 @@ module Spree
     end
 
     def adjustments_total
-      self.adjustments.collect(&:amount).compact.sum unless self.adjustments.nil?
+      self.adjustments.collect(&:amount).compact.sum unless self.adjustments.empty?
     end
 
     def total
