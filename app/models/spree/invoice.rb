@@ -25,7 +25,7 @@ module Spree
 
     def adjustments
       if self.shipment.nil?
-        self.order.adjustments
+        self.order.adjustments.eligible
       else
         [self.shipment.adjustment]
       end
