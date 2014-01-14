@@ -11,6 +11,6 @@ Gem::Specification.new do |s|
   s.requirements << 'none'
   s.authors      = 'Spree Community & 3DRobotics'
 
-  s.add_dependency('spree_core', '~> 2.0.0')
+  s.add_dependency('spree_core', '~> 2.1.0')
 
 end

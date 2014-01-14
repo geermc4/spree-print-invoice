@@ -17,7 +17,6 @@ module Spree
       def load_objects
         @invoice = Spree::Invoice.new(params)
         if !@invoice.valid?
-          # flash[:error] = @invoice.errors.messages
           redirect_to admin_orders_path
         end
         @order = @invoice.order

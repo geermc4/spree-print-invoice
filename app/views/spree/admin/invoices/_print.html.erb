@@ -9,10 +9,6 @@
         <h3><%= Spree.t(:customer_invoice, :scope => [:printinvoice]) %></h3>
       <p id="order_number">
         <%= "#{Spree.t(:order_number)} #{@order.number}" %><br />
-        <%=
-          # Disabling Email for now
-          #@order.email
-        %>
       </p>
       <p>
         <%= Spree.l @order.completed_at.to_date unless @order.completed_at.nil? %>
@@ -24,7 +20,6 @@
       <%
         bill_address = @order.bill_address
         ship_address = @order.ship_address
-        # shipping_method = @order.shipping_method
         anonymous = @order.email =~ /@example.net$/
       %>
       <table id="address" class="with_border" cellspacing="0">
@@ -54,7 +49,6 @@
               <%= "#{@order.ship_address.zipcode} #{@order.ship_address.city} #{(@order.ship_address.state ? @order.ship_address.state.abbr : "")}" %><br />
               <%= ship_address.country.name %><br />
               <%= ship_address.phone %><br />
-              <% # "Shipping method: #{shipping_method.name}" if shipping_method %>
             <% end %>
             </p>
           </td>
@@ -76,9 +70,9 @@
           <tr id="<%= "col_#{index}" %>" class="col <%= (index.odd?) ? "odd" : "even" %>">
             <td><%= item.variant.product.sku %></td>
             <td><%= item.variant.product.name %></td>
-            <%== "<td class=\"right\">#{number_to_currency(item.line_item.price)}</td>" unless @hide_prices %>
+            <%== "<td class=\"right\">#{number_to_currency(item.price)}</td>" unless @hide_prices %>
             <td class="right"><%= item.quantity %></td>
-            <%== "<td class=\"right\">#{number_to_currency(item.line_item.price * item.quantity)}</td>" unless @hide_prices %>
+            <%== "<td class=\"right\">#{number_to_currency(item.price * item.quantity)}</td>" unless @hide_prices %>
           </tr>
         <% end %>
         <% unless @hide_prices %>
