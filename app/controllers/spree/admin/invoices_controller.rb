@@ -1,8 +1,7 @@
 module Spree
   module Admin
-    class InvoicesController < ResourceController
+    class InvoicesController < BaseController
       layout "spree/layouts/invoice"
-      before_filter :load_objects, :only => [:print]
 
       def show
         # show all invoices in a list
@@ -11,7 +10,14 @@ module Spree
       def print
         render :html, :template => "spree/admin/invoices/invoice.html.erb"
       end
-      
+
+      protected
+
+      def authorize_admin
+        load_objects
+        authorize! :read, @order, session[:access_token]
+      end
+
       private
 
       def load_objects
