@@ -22,10 +22,7 @@ module Spree
 
       def load_objects
         @invoice = Spree::Invoice.new(params)
-        if !@invoice.valid?
-          redirect_to admin_orders_path
-        end
-        @order = @invoice.order
+        @order = Spree::Order.find_by_number!(params[:order_id])
       end
     end
   end
